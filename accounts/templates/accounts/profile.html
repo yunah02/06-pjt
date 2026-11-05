@@ -48,14 +48,14 @@
 
   <hr>
   <h4>작성한 쓰레드</h4>
-  {# TODO: B가 Thread 모델을 push하면 아래 주석을 풀고 URL name 맞추기 #}
-  {% comment %}
   <ul>
     {% for thread in person.thread_set.all %}
-      <li><a href="{% url 'books:thread_detail' thread.pk %}">{{ thread.title }}</a></li>
+      <li>
+        <a href="{% url 'books:thread_detail' thread.pk %}">{{ thread.title }}</a>
+        <span class="text-muted">| {{ thread.book.title }}</span>
+      </li>
     {% empty %}
       <li>작성한 쓰레드가 없습니다.</li>
     {% endfor %}
   </ul>
-  {% endcomment %}
 {% endblock content %}
