@@ -13,5 +13,6 @@ urlpatterns = [
     path('threads/<int:thread_pk>/update/', views.thread_update, name='thread_update'),
     path('threads/<int:thread_pk>/delete/', views.thread_delete, name='thread_delete'),
     path('threads/<int:thread_pk>/like/', views.like, name='like'),
-
+    path('threads/<int:thread_pk>/comments/', views.comment_create, name='comment_create'),
+    path('comments/<int:comment_pk>/delete/', views.comment_delete, name='comment_delete'),
 ]

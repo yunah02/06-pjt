@@ -1,5 +1,5 @@
 from django import forms
-from .models import Book, Thread
+from .models import Book, Thread, Comment
 
 class BookForm(forms.ModelForm):
     class Meta:
@@ -32,4 +32,8 @@ class ThreadForm(forms.ModelForm):
             'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 6}),
             'read_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
         }
-
+        
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('content',)
