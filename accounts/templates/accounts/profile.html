@@ -47,6 +47,15 @@
   {% endif %}
 
   <hr>
+  <h4>선호 카테고리</h4>
+  <ul>
+    {% for category in person.preferred_categories.all %}
+      <li>{{ category.name }}</li>
+    {% empty %}
+      <li>선택한 카테고리가 없습니다.</li>
+    {% endfor %}
+  </ul>
+  <hr>
   <h4>작성한 쓰레드</h4>
   <ul>
     {% for thread in person.thread_set.all %}
