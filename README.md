@@ -85,15 +85,15 @@ python manage.py runserver
 
 ```mermaid
 erDiagram
-    USER ||--o{ BOOK : "작성 (1:N)"
-    USER ||--o{ THREAD : "작성 (1:N)"
-    USER ||--o{ COMMENT : "작성 (1:N)"
-    BOOK ||--o{ THREAD : "도서의 쓰레드 (1:N)"
-    THREAD ||--o{ COMMENT : "쓰레드의 댓글 (1:N)"
-    CATEGORY |o--o{ BOOK : "도서 장르 (1:N)"
-    USER }o--o{ THREAD : "좋아요 like_users (M:N)"
-    USER }o--o{ USER : "팔로우 followings (M:N)"
-    USER }o--o{ CATEGORY : "선호 장르 preferred_categories (M:N)"
+    USER ||--o{ BOOK : "작성 (1:N)"}
+    USER ||--o{ THREAD : "작성 (1:N)"}
+    USER ||--o{ COMMENT : "작성 (1:N)"}
+    BOOK ||--o{ THREAD : "도서의 쓰레드 (1:N)"}
+    THREAD ||--o{ COMMENT : "쓰레드의 댓글 (1:N)"}
+    CATEGORY |o--o{ BOOK : "도서 장르 (1:N)"}
+    USER o--o{ THREAD : "좋아요 like_users (M:N)"}
+    USER o--o{ USER : "팔로우 followings (M:N)"}
+    USER o--o{ CATEGORY : "선호 장르 preferred_categories (M:N)"}
 
     USER {
         string username
