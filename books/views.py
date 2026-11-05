@@ -5,6 +5,7 @@ from .forms import BookForm, ThreadForm, CommentForm
 from .models import Book, Thread, Comment
 from django.http import Http404
 from accounts.models import Category
+from .ai import fill_author_info
 
 @require_safe
 def index(request):
@@ -33,6 +34,7 @@ def create(request):
             book = form.save(commit=False)
             book.user = request.user
             book.save()
+            fill_author_info(book)
             return redirect('books:detail', book.pk)
     else: 
         form = BookForm()
