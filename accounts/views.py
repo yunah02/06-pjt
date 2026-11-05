@@ -6,6 +6,7 @@ from django.views.decorators.http import require_http_methods, require_POST, req
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 
 # Create your views here.
 @require_http_methods(['GET', 'POST'])
@@ -66,10 +67,19 @@ def follow(request, user_pk):
 @require_safe
 def people(request):
     User = get_user_model()
-    persons = User.objects.all()
+    persons = User.objects.annotate(
+        follower_count=Count('followers')
+    ).order_by('-follower_count', 'username')
+
+    recommended = []
     if request.user.is_authenticated:
         persons = persons.exclude(pk=request.user.pk)
-    return render(request, 'accounts/people.html', {'persons':persons})
+        recommended = persons.exclude(pk__in=request.user.followings.all())[:5]
+
+    return render(request, 'accounts/people.html', {
+        'persons': persons,
+        'recommended': recommended,
+    })
 
 @login_required
 @require_http_methods(['GET', 'POST'])
