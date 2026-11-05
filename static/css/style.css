@@ -1,0 +1,16 @@
+/* 전체 페이지 기본 설정 */
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+    padding: 15px 30px;
+}
+
+/* 브랜드 */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 24px;
+}
