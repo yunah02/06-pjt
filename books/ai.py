@@ -15,13 +15,16 @@ def get_client():
         timeout=60,
     )
 
+AUTHOR_KEYWORDS = ('작가', '소설가', '시인', '저술가', '극작가', '수필가',
+                   '평론가', '작사가', '저자', '학자', '교수', '목사', '사상가', '번역가')
+
 
 def search_wikipedia(name):
-    """작가 이름으로 소개글과 프로필 사진 주소를 가져온다. 결과가 없으면 None."""
+    """'이름 작가'로 검색해서, 첫 문장이 사람(작가)을 설명하는 문서만 고른다. 없으면 None."""
     params = {
         'action': 'query', 'format': 'json', 'redirects': 1,
-        'generator': 'search', 'gsrsearch': name, 'gsrlimit': 1,
-        'prop': 'extracts|pageimages', 'exintro': 1, 'explaintext': 1,
+        'generator': 'search', 'gsrsearch': f'{name} 작가', 'gsrlimit': 5,
+        'prop': 'extracts|pageimages', 'exintro': 1, 'explaintext': 1, 'exlimit': 'max',
         'piprop': 'thumbnail', 'pithumbsize': 300,
     }
     try:
@@ -30,14 +33,18 @@ def search_wikipedia(name):
         pages = res.json().get('query', {}).get('pages', {})
     except (requests.RequestException, ValueError):
         return None
-    if not pages:
-        return None
-    page = next(iter(pages.values()))
-    return {
-        'title': page.get('title', ''),
-        'extract': page.get('extract', '')[:1500],
-        'image': page.get('thumbnail', {}).get('source', ''),
-    }
+
+    # 검색 순위 순으로 정렬
+    for page in sorted(pages.values(), key=lambda p: p.get('index', 99)):
+        extract = page.get('extract', '')
+        # 문서 첫머리에 작가 관련 단어가 있고, 문서 제목에 이름이 들어 있어야 통과
+        if name in page.get('title', '') and any(k in extract[:150] for k in AUTHOR_KEYWORDS):
+            return {
+                'title': page.get('title', ''),
+                'extract': extract[:1500],
+                'image': page.get('thumbnail', {}).get('source', ''),
+            }
+    return None
 
 
 def parse_json(text):
