@@ -3,8 +3,9 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 @require_http_methods(['GET', 'POST'])
@@ -69,3 +70,15 @@ def people(request):
     if request.user.is_authenticated:
         persons = persons.exclude(pk=request.user.pk)
     return render(request, 'accounts/people.html', {'persons':persons})
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def update(request):
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST, request.FILES, instance =request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:profile', username=request.user)
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+    return render(request, 'accounts/update.html', {'form':form})
