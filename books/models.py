@@ -10,6 +10,12 @@ class Book(models.Model):
     )
     author = models.CharField(max_length=50)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    category = models.ForeignKey(
+    'accounts.Category',
+    on_delete=models.SET_NULL,
+    null=True,
+    blank=True,
+    )
 
     def __str__(self):
         return self.title
