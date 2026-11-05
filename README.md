@@ -469,18 +469,6 @@ git push -u origin book
 - **해결**: 로컬에서만 임시 accounts URL을 만들어 테스트했고, 그 파일은 commit 하지 않았습니다. A의 accounts가 merge된 뒤 정상 동작을 확인했습니다.
 - **배운 점**: URL name을 미리 합의해도, 실제 코드가 들어오는 **merge 순서**가 중요합니다.
 
-### 8-5. 원칙 점검 (프로젝트 종료 시)
-
-| 원칙 | 지켜졌는가 | 근거 / 반성 |
-| --- | --- | --- |
-| `master`에 직접 commit 하지 않기 | ⬜ 확인 필요 | 초기 프로젝트 뼈대 commit 확인 필요 |
-| 기능별 브랜치에서 작업 후 MR로 merge | ✅ | `book` → `master` MR로 merge |
-| merge 전 `master` 최신 내용 반영 | ⬜ 확인 필요 | `base.html` conflict는 MR 단계에서 발견됨 |
-| commit 메시지 `타입: 내용` 형식 | ⬜ 확인 필요 | GitLab commit 목록 기준으로 점검 |
-| 동작 확인 후 commit | ⬜ 확인 필요 | |
-| 불필요한 파일 제출하지 않기 | ✅ | `.gitignore` 적용 (`db.sqlite3`, `media/`, `__pycache__/`) |
-| 합의한 필드명 / URL name 지키기 | ✅ | 두 앱 코드가 수정 없이 연결됨 |
-
 ---
 
 ## 9. 학습 내용
