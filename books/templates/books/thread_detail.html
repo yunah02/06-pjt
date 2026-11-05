@@ -13,8 +13,7 @@
   <div class="card-footer d-flex gap-2">
     <a href="{% url 'books:detail' thread.book.pk %}" class="btn btn-outline-secondary btn-sm">도서로 돌아가기</a>
 
-    {% comment %}
-      [좋아요 버튼 자리] like view(F624)를 만들면 주석 풀기 
+    {% if request.user.is_authenticated %}
       <form action="{% url 'books:like' thread.pk %}" method="POST">
         {% csrf_token %}
         {% if request.user in thread.like_users.all %}
@@ -23,7 +22,7 @@
           <button type="submit" class="btn btn-outline-danger btn-sm">좋아요</button>
         {% endif %}
       </form>
-    {% endcomment %}
+    {% endif %}
 
     {% if request.user == thread.user %}
       <a href="{% url 'books:thread_update' thread.pk %}" class="btn btn-outline-primary btn-sm">수정하기</a>

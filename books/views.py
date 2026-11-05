@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from django.views.decorators.http import require_http_methods, require_POST, require_safe 
+from django.views.decorators.http import require_http_methods, require_POST, require_safe
 from .forms import BookForm, ThreadForm
 from .models import Book, Thread
-
+from django.http import Http404
 
 @require_safe
 def index(request):
@@ -124,3 +124,19 @@ def thread_delete(request, thread_pk):
         thread.delete()
         return redirect('books:detail', book_pk)
     return redirect('books:thread_detail', thread_pk)
+
+@require_POST
+def like(request, thread_pk):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
+
+    try:
+        thread = Thread.objects.get(pk=thread_pk)
+    except Thread.DoesNotExist:
+        raise Http404('존재하지 않는 쓰레드입니다.')
+
+    if thread.like_users.filter(pk=request.user.pk).exists():
+        thread.like_users.remove(request.user)  
+    else:
+        thread.like_users.add(request.user)   
+    return redirect('books:thread_detail', thread_pk=thread.pk)
