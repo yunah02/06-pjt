@@ -11,13 +11,12 @@
 <body>
   <nav class="navbar navbar-expand-lg" style="background-color: #1a8754;">
     <div class="container-fluid">
-      <a class="navbar-brand text-white" href="#">ThRead</a>
+      <a class="navbar-brand text-white" href="{% url 'books:index' %}">ThRead</a>
       <ul class="navbar-nav ms-auto flex-row gap-3">
-        {# TODO: B가 books URL을 push하면 INDEX, CREATE, 브랜드 링크를 books:index, books:create로 교체 #}
-        <li class="nav-item"><a class="nav-link text-white" href="#">INDEX</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="{% url 'books:index' %}">INDEX</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="{% url 'accounts:people' %}">PEOPLE</a></li>
         {% if request.user.is_authenticated %}
-          <li class="nav-item"><a class="nav-link text-white" href="#">CREATE</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{% url 'books:create' %}">CREATE</a></li>
           <li class="nav-item">
             <a class="nav-link text-white" href="{% url 'accounts:profile' request.user.username %}">MY PROFILE</a>
           </li>
@@ -34,11 +33,12 @@
       </ul>
     </div>
   </nav>
-
+ 
   <div class="container mt-4">
     {% block content %}{% endblock content %}
   </div>
-
+ 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+ 
