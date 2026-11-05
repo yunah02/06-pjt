@@ -8,6 +8,18 @@
   {% endif %}
 </div>
 
+<ul class="nav nav-pills mb-3">
+  <li class="nav-item">
+    <a class="nav-link {% if not selected %}active{% endif %}" href="{% url 'books:index' %}">전체</a>
+  </li>
+  {% for category in categories %}
+    <li class="nav-item">
+      <a class="nav-link {% if selected == category.pk %}active{% endif %}"
+         href="{% url 'books:index' %}?category={{ category.pk }}">{{ category.name }}</a>
+    </li>
+  {% endfor %}
+</ul>
+
 <div class="list-group">
   {% for book in books %}
     <a href="{% url 'books:detail' book.pk %}" class="list-group-item list-group-item-action">
@@ -15,7 +27,11 @@
       <span class="text-muted small">· {{ book.author }} · 평점 {{ book.customer_review_rank }}</span>
     </a>
   {% empty %}
-    <p class="text-muted">아직 등록된 도서가 없습니다.</p>
+    {% if selected %}
+      <p class="text-muted">해당 카테고리에 등록된 도서가 없습니다.</p>
+    {% else %}
+      <p class="text-muted">아직 등록된 도서가 없습니다.</p>
+    {% endif %}
   {% endfor %}
 </div>
 {% endblock content %}

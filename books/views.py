@@ -4,11 +4,23 @@ from django.views.decorators.http import require_http_methods, require_POST, req
 from .forms import BookForm, ThreadForm, CommentForm
 from .models import Book, Thread, Comment
 from django.http import Http404
+from accounts.models import Category
 
 @require_safe
 def index(request):
+    categories = Category.objects.all()
+    selected = request.GET.get('category')
     books = Book.objects.order_by('-pk')
-    context = {'books': books}
+    if selected and selected.isdigit():
+        selected = int(selected)
+        books = books.filter(category_id=selected)
+    else:
+        selected = None
+    context = {
+        'books': books,
+        'categories': categories,
+        'selected': selected,
+    }
     return render(request, 'books/index.html', context)
 
 

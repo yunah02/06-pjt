@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
@@ -11,8 +12,12 @@ class CustomUserCreationForm(UserCreationForm):
             'gender', 'age',
             'weekly_reading_time', 'yearly_reading_count',
             'profile_image',
+            'profile_image', 'preferred_categories',
         )
-        
+        labels = {'preferred_categories': '선호 카테고리'}
+        widgets = {'preferred_categories': forms.CheckboxSelectMultiple()}
+
+
 class CustomUserChangeForm(UserChangeForm):
     password = None
     class Meta(UserChangeForm.Meta):
@@ -22,4 +27,7 @@ class CustomUserChangeForm(UserChangeForm):
             'gender', 'age',
             'weekly_reading_time', 'yearly_reading_count',
             'profile_image',
+            'profile_image', 'preferred_categories',
         )
+        labels = {'preferred_categories': '선호 카테고리'}
+        widgets = {'preferred_categories': forms.CheckboxSelectMultiple()}

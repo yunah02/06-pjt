@@ -10,12 +10,14 @@ class BookForm(forms.ModelForm):
             'description': '설명',
             'customer_review_rank': '회원 리뷰 평점 (0~5)',
             'author': '저자',
+            'category': '카테고리',
         }
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
             'customer_review_rank': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.1', 'min': 0, 'max': 5 }),
             'author': forms.TextInput(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-select'}),
         }
 
 class ThreadForm(forms.ModelForm):
