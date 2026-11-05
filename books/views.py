@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
-from .forms import BookForm, ThreadForm
-from .models import Book, Thread
+from .forms import BookForm, ThreadForm, CommentForm
+from .models import Book, Thread, Comment
 from django.http import Http404
 
 @require_safe
@@ -140,3 +140,33 @@ def like(request, thread_pk):
     else:
         thread.like_users.add(request.user)   
     return redirect('books:thread_detail', thread_pk=thread.pk)
+
+@login_required
+@require_POST
+def comment_create(request, thread_pk):
+    try:
+        thread = Thread.objects.get(pk=thread_pk)
+    except Thread.DoesNotExist:
+        raise Http404('존재하지 않는 쓰레드입니다.')
+
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.thread = thread
+        comment.user = request.user
+        comment.save()
+    return redirect('books:thread_detail', thread_pk=thread.pk)
+
+
+@login_required
+@require_POST
+def comment_delete(request, comment_pk):
+    try:
+        comment = Comment.objects.get(pk=comment_pk)
+    except Comment.DoesNotExist:
+        raise Http404('존재하지 않는 댓글입니다.')
+
+    thread_pk = comment.thread.pk
+    if comment.user == request.user:   # 본인 댓글만 삭제
+        comment.delete()
+    return redirect('books:thread_detail', thread_pk=thread_pk)
