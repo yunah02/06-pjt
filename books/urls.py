@@ -12,8 +12,6 @@ urlpatterns = [
     path('threads/<int:thread_pk>/', views.thread_detail, name= 'thread_detail'),
     path('threads/<int:thread_pk>/update/', views.thread_update, name='thread_update'),
     path('threads/<int:thread_pk>/delete/', views.thread_delete, name='thread_delete'),
-
-    # like view 만든 후 아래 주석 풀기
-    # path('threads/<int:thread_pk>/like/', views.like, name='like'),
+    path('threads/<int:thread_pk>/like/', views.like, name='like'),
 
 ]
