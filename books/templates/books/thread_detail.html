@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <h1 class="h3 card-title">{{ thread.title }}</h1>
+    <p class="text-muted small">
+      도서: {{ thread.book.title }} · 작성자: {{ thread.user }} · 독서일: {{ thread.read_date|date:"Y-m-d" }}
+    </p>
+    <p class="card-text">{{ thread.content|linebreaksbr }}</p>
+    <p class="small mb-0">좋아요 {{ thread.like_users.count }}개</p>
+  </div>
+  <div class="card-footer d-flex gap-2">
+    <a href="{% url 'books:detail' thread.book.pk %}" class="btn btn-outline-secondary btn-sm">도서로 돌아가기</a>
+
+    {% comment %}
+      [좋아요 버튼 자리] like view(F624)를 만들면 주석 풀기 
+      <form action="{% url 'books:like' thread.pk %}" method="POST">
+        {% csrf_token %}
+        {% if request.user in thread.like_users.all %}
+          <button type="submit" class="btn btn-danger btn-sm">좋아요 취소</button>
+        {% else %}
+          <button type="submit" class="btn btn-outline-danger btn-sm">좋아요</button>
+        {% endif %}
+      </form>
+    {% endcomment %}
+
+    {% if request.user == thread.user %}
+      <a href="{% url 'books:thread_update' thread.pk %}" class="btn btn-outline-primary btn-sm">수정하기</a>
+      <form action="{% url 'books:thread_delete' thread.pk %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-danger btn-sm">삭제하기</button>
+      </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock content %}
