@@ -28,9 +28,12 @@
 
   {% if request.user.is_authenticated %}
     {% if request.user == person %}
-      {# TODO: F612, F613 완성 후 {% url %}로 교체 #}
       <a href="{% url 'accounts:update' %}" class="btn btn-sm btn-outline-secondary">회원정보 수정</a>
-      <a href="#" class="btn btn-sm btn-outline-danger">회원탈퇴</a>
+      <form action="{% url 'accounts:delete' %}" method="POST" class="d-inline"
+            onsubmit="return confirm('정말 탈퇴하시겠습니까?');">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-sm btn-outline-danger">회원탈퇴</button>
+      </form>
     {% else %}
       <form action="{% url 'accounts:follow' person.pk %}" method="POST">
         {% csrf_token %}
