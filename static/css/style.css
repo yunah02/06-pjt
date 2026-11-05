@@ -1,16 +1,430 @@
-/* 전체 페이지 기본 설정 */
+
+/* =========================================
+   ThRead - Cozy Learning Garden
+   Pastel / Cute / Edutech Design
+========================================= */
+
+/* 1. COLOR SYSTEM */
+:root {
+    --tr-green: #477c5b;
+    --tr-green-dark: #315f43;
+    --tr-green-light: #e6eee0;
+    --tr-green-pale: #f0f4e9;
+
+    --tr-cream: #fffaf1;
+    --tr-bg: #faf7f0;
+    --tr-white: #ffffff;
+    --tr-beige: #f4e9d8;
+    --tr-peach: #f8dfca;
+    --tr-yellow: #f8edc7;
+
+    --tr-text: #39483c;
+    --tr-muted: #879087;
+    --tr-border: #ebe5d9;
+
+    --tr-shadow: 0 5px 20px rgba(79, 91, 68, 0.07);
+    --tr-radius: 20px;
+}
+
+/* 2. GLOBAL */
+* {
+    box-sizing: border-box;
+}
+
 body {
-    background-color: #f8f9fa;
-    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: var(--tr-bg);
+    color: var(--tr-text);
+    font-family:
+        'Pretendard',
+        'Noto Sans KR',
+        'Malgun Gothic',
+        sans-serif;
+    line-height: 1.7;
+    letter-spacing: -0.3px;
 }
 
-/* Navbar */
-.navbar {
-    padding: 15px 30px;
+a {
+    color: var(--tr-green);
+    text-decoration: none;
+    transition: 0.2s ease;
 }
 
-/* 브랜드 */
-.navbar-brand {
-    font-weight: bold;
-    font-size: 24px;
+a:hover {
+    color: var(--tr-green-dark);
+}
+
+.page-container {
+    max-width: 1200px;
+    min-height: calc(100vh - 80px);
+    padding-top: 36px;
+    padding-bottom: 80px;
+}
+
+/* 3. NAVBAR */
+.tr-navbar {
+    min-height: 68px;
+    padding: 10px 20px;
+    background: rgba(255, 253, 248, 0.96);
+    border-bottom: 1px solid var(--tr-border);
+    box-shadow: 0 2px 12px rgba(70, 90, 70, 0.04);
+}
+
+.tr-brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--tr-green-dark) !important;
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.brand-icon {
+    font-size: 27px;
+}
+
+.tr-navbar .nav-link {
+    padding: 8px 13px !important;
+    color: var(--tr-text);
+    font-size: 13px;
+    font-weight: 650;
+    border-radius: 30px;
+    transition: 0.2s ease;
+}
+
+.tr-navbar .nav-link:hover {
+    color: var(--tr-green-dark);
+    background: var(--tr-green-light);
+}
+
+.tr-navbar .nav-login-btn {
+    padding: 8px 19px !important;
+    color: white !important;
+    background: var(--tr-green);
+    border: none;
+    border-radius: 30px;
+}
+
+.tr-navbar .nav-login-btn:hover {
+    color: white !important;
+    background: var(--tr-green-dark);
+}
+
+.tr-navbar form {
+    margin: 0;
+}
+
+/* 4. HEADINGS */
+h1 {
+    margin-bottom: 20px;
+    color: var(--tr-green-dark);
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+h1.h3 {
+    font-size: 26px;
+}
+
+h2 {
+    color: var(--tr-green-dark);
+    font-weight: 750;
+}
+
+h4 {
+    margin: 25px 0 15px;
+    color: var(--tr-green-dark);
+    font-size: 19px;
+    font-weight: 750;
+}
+
+hr {
+    margin: 25px 0;
+    border-color: var(--tr-border);
+    opacity: 1;
+}
+
+/* 5. CARDS */
+.card {
+    overflow: hidden;
+    background: var(--tr-white);
+    border: 1px solid var(--tr-border);
+    border-radius: var(--tr-radius);
+    box-shadow: var(--tr-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 9px 25px rgba(79, 91, 68, 0.10);
+}
+
+.card-body {
+    padding: 25px;
+}
+
+.card-title {
+    color: var(--tr-green-dark);
+    font-weight: 750;
+}
+
+.card-footer {
+    padding: 15px 22px;
+    background: #fffdf9;
+    border-top: 1px solid var(--tr-border);
+}
+
+/* 6. BUTTONS */
+.btn {
+    padding: 9px 19px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary,
+.btn-success {
+    color: white;
+    background: var(--tr-green);
+    border-color: var(--tr-green);
+}
+
+.btn-primary:hover,
+.btn-success:hover {
+    color: white;
+    background: var(--tr-green-dark);
+    border-color: var(--tr-green-dark);
+}
+
+.btn-outline-primary,
+.btn-outline-success {
+    color: var(--tr-green);
+    border-color: #8bb397;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-success:hover {
+    color: white;
+    background: var(--tr-green);
+    border-color: var(--tr-green);
+}
+
+.btn-outline-secondary {
+    color: #707970;
+    border-color: #d9ded5;
+}
+
+.btn-danger,
+.btn-outline-danger {
+    border-radius: 30px;
+}
+
+/* 7. LIST GROUP */
+.list-group {
+    gap: 10px;
+}
+
+.list-group-item {
+    padding: 17px 21px;
+    background: var(--tr-white);
+    border: 1px solid var(--tr-border) !important;
+    border-radius: 15px !important;
+    color: var(--tr-text);
+    transition: 0.2s ease;
+}
+
+.list-group-item-action:hover {
+    color: var(--tr-green-dark);
+    background: var(--tr-green-pale);
+    border-color: #cbdcca !important;
+    transform: translateY(-2px);
+}
+
+/* 8. CATEGORY FILTER */
+.nav-pills {
+    gap: 8px;
+    margin-bottom: 25px;
+}
+
+.nav-pills .nav-link {
+    padding: 8px 19px;
+    color: var(--tr-green);
+    background: white;
+    border: 1px solid var(--tr-border);
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 650;
+}
+
+.nav-pills .nav-link:hover {
+    background: var(--tr-green-light);
+}
+
+.nav-pills .nav-link.active {
+    color: white;
+    background: var(--tr-green);
+    border-color: var(--tr-green);
+}
+
+/* 9. BADGES */
+.badge {
+    padding: 7px 12px;
+    border-radius: 30px;
+    font-weight: 650;
+}
+
+.bg-success {
+    background-color: var(--tr-green) !important;
+}
+
+/* 10. FORMS */
+form p {
+    margin-bottom: 18px;
+}
+
+form label,
+.form-label {
+    display: inline-block;
+    margin-bottom: 7px;
+    color: var(--tr-text);
+    font-size: 14px;
+    font-weight: 650;
+}
+
+.form-control,
+.form-select,
+.container form > p input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+.container form > p select,
+.container form > p textarea {
+    width: 100%;
+    padding: 11px 15px;
+    color: var(--tr-text);
+    background: #fffefa;
+    border: 1px solid #e5e1d7;
+    border-radius: 12px;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus,
+.container form > p input:focus,
+.container form > p textarea:focus,
+.container form > p select:focus {
+    color: var(--tr-text);
+    background: white;
+    border-color: #8bb397;
+    box-shadow: 0 0 0 4px rgba(71, 124, 91, 0.10);
+    outline: none;
+}
+
+textarea.form-control {
+    min-height: 140px;
+}
+
+input[type="checkbox"] {
+    accent-color: var(--tr-green);
+    margin-right: 7px;
+}
+
+input[type="file"] {
+    max-width: 100%;
+    font-size: 13px;
+}
+
+.helptext {
+    display: block;
+    margin-top: 5px;
+    color: var(--tr-muted);
+    font-size: 12px;
+}
+
+.errorlist {
+    padding-left: 18px;
+    color: #d46c63;
+    font-size: 13px;
+}
+
+/* 11. PROFILE IMAGE */
+.rounded-circle {
+    border: 4px solid #f4eadb;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+}
+
+/* 12. TEXT */
+.text-muted {
+    color: var(--tr-muted) !important;
+}
+
+.small {
+    font-size: 12px;
+}
+
+/* 13. PROFILE AND PEOPLE */
+ul {
+    padding-left: 22px;
+}
+
+.page-container > ul:not(.nav):not(.list-group) {
+    padding: 15px 25px;
+    background: white;
+    border: 1px solid var(--tr-border);
+    border-radius: 15px;
+}
+
+.page-container > div > p {
+    margin-bottom: 10px;
+}
+
+/* 14. TABLET */
+@media (max-width: 991px) {
+    .page-container {
+        padding: 25px 20px 60px;
+    }
+
+    .tr-navbar .navbar-nav {
+        padding-top: 12px;
+        align-items: stretch !important;
+    }
+
+    .tr-navbar .nav-link {
+        padding: 10px 15px !important;
+    }
+}
+
+/* 15. MOBILE */
+@media (max-width: 576px) {
+    .page-container {
+        padding: 20px 15px 50px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h1.h3 {
+        font-size: 22px;
+    }
+
+    .card-body {
+        padding: 18px;
+    }
+
+    .list-group-item {
+        padding: 14px;
+    }
+
+    .btn {
+        font-size: 13px;
+    }
+
+    .tr-brand {
+        font-size: 22px;
+    }
 }
