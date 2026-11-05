@@ -10,13 +10,13 @@ from django.contrib.auth import get_user_model
 @require_http_methods(['GET', 'POST'])
 def login(request):
     if request.user.is_authenticated:
-        return redirect('admin:index')
+        return redirect('accounts:profile', username=request.user.username)
 
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect('admin:index')
+            return redirect('accounts:profile', username=request.user.username)
     else:
         form = AuthenticationForm()
     return render(request, 'accounts/login.html', {'form':form})
@@ -25,19 +25,19 @@ def login(request):
 def logout(request):
     if request.user.is_authenticated:
         auth_logout(request)
-    return redirect('admin:index')
+    return redirect('accounts:login')  # TODO: B가 push하면 'books:index'로 교체
     
 @require_http_methods(['GET', 'POST'])
 def signup(request):
     if request.user.is_authenticated:
-        return redirect('admin:index')
+        return redirect('accounts:profile', username=request.user.username)
     
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
-            return redirect('admin:index')
+            return redirect('accounts:profile', username=request.user.username)
     else:
         form = CustomUserCreationForm()
     return render(request, 'accounts/signup.html', {'form':form})
@@ -61,3 +61,11 @@ def follow(request, user_pk):
         else:
             person.followers.add(request.user)
     return redirect('accounts:profile', username=person.username)
+
+@require_safe
+def people(request):
+    User = get_user_model()
+    persons = User.objects.all()
+    if request.user.is_authenticated:
+        persons = persons.exclude(pk=request.user.pk)
+    return render(request, 'accounts/people.html', {'persons':persons})

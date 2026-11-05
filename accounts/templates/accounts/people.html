@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>독서가 둘러보기</h1>
+  <hr>
+  <ul class="list-group">
+    {% for person in persons %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <a href="{% url 'accounts:profile' person.username %}">{{ person.username }}</a>
+        <span class="text-muted">팔로워 {{ person.followers.count }}</span>
+      </li>
+    {% empty %}
+      <li class="list-group-item">아직 다른 사용자가 없습니다.</li>
+    {% endfor %}
+  </ul>
+{% endblock content %}

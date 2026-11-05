@@ -13,6 +13,7 @@
       <ul class="navbar-nav ms-auto flex-row gap-3">
         {# TODO: B가 books URL을 push하면 INDEX, CREATE, 브랜드 링크를 books:index, books:create로 교체 #}
         <li class="nav-item"><a class="nav-link text-white" href="#">INDEX</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="{% url 'accounts:people' %}">PEOPLE</a></li>
         {% if request.user.is_authenticated %}
           <li class="nav-item"><a class="nav-link text-white" href="#">CREATE</a></li>
           <li class="nav-item">
