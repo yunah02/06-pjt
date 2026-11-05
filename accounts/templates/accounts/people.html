@@ -12,6 +12,9 @@
           <div>
             <a href="{% url 'accounts:profile' person.username %}">{{ person.username }}</a>
             <span class="text-muted ms-2">팔로워 {{ person.follower_count }}</span>
+            {% if person.common_count %}
+              <span class="badge bg-success ms-2">겹치는 선호 장르 {{ person.common_count }}개</span>
+            {% endif %}
           </div>
           <form action="{% url 'accounts:follow' person.pk %}" method="POST">
             {% csrf_token %}
