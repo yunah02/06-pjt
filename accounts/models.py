@@ -2,6 +2,12 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
+class Category(models.Model):
+    name = models.CharField('카테고리', max_length=50)
+
+    def __str__(self):
+        return self.name
+    
 class User(AbstractUser):
     GENDER_CHOICES = [
         ('M', '남성'),
@@ -19,5 +25,10 @@ class User(AbstractUser):
         'self',
         symmetrical=False,
         related_name='followers',
+        blank=True,
+    )
+    preferred_categories = models.ManyToManyField(
+        Category,
+        related_name='preferred_users',
         blank=True,
     )
