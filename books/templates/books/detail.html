@@ -5,6 +5,7 @@
   <div class="card-body">
     <h1 class="h3 card-title">{{ book.title }}</h1>
     <p class="text-muted mb-2">저자: {{ book.author }} · 회원 리뷰 평점: {{ book.customer_review_rank }}</p>
+    <p class="mb-2"><span class="badge bg-success">{{ book.category.name|default:"미분류" }}</span></p>
     <p class="card-text">{{ book.description|linebreaksbr }}</p>
     <p class="small text-muted mb-0">작성자: {{ book.user }}</p>
   </div>
