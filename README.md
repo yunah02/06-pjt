@@ -85,15 +85,15 @@ python manage.py runserver
 
 ```mermaid
 erDiagram
-    USER ||--o{ BOOK : "작성 (1:N)"}
-    USER ||--o{ THREAD : "작성 (1:N)"}
-    USER ||--o{ COMMENT : "작성 (1:N)"}
-    BOOK ||--o{ THREAD : "도서의 쓰레드 (1:N)"}
-    THREAD ||--o{ COMMENT : "쓰레드의 댓글 (1:N)"}
-    CATEGORY |o--o{ BOOK : "도서 장르 (1:N)"}
-    USER o--o{ THREAD : "좋아요 like_users (M:N)"}
-    USER o--o{ USER : "팔로우 followings (M:N)"}
-    USER o--o{ CATEGORY : "선호 장르 preferred_categories (M:N)"}
+    USER ||--o{ BOOK : "작성 (1:N)"
+    USER ||--o{ THREAD : "작성 (1:N)"
+    USER ||--o{ COMMENT : "작성 (1:N)"
+    BOOK ||--o{ THREAD : "도서의 쓰레드 (1:N)"
+    THREAD ||--o{ COMMENT : "쓰레드의 댓글 (1:N)"
+    CATEGORY |o--o{ BOOK : "도서 장르 (1:N)"
+    USER }o--o{ THREAD : "좋아요 like_users (M:N)"
+    USER }o--o{ USER : "팔로우 followings (M:N)"
+    USER }o--o{ CATEGORY : "선호 장르 preferred_categories (M:N)"
 
     USER {
         string username
@@ -114,8 +114,8 @@ erDiagram
         text description
         float customer_review_rank "0 ~ 5"
         string author "max 50"
-        fk user
-        fk category "SET_NULL"
+        int user_id FK
+        int category_id FK "SET_NULL"
         text author_info "AI 생성"
         json author_works "AI 생성"
         url author_image "위키피디아"
@@ -126,14 +126,14 @@ erDiagram
         date read_date
         datetime created_at "auto_now_add"
         datetime updated_at "auto_now"
-        fk book
-        fk user
+        int book_id FK
+        int user_id FK
     }
     COMMENT {
         string content "max 200"
         datetime created_at "auto_now_add"
-        fk thread
-        fk user
+        int thread_id FK
+        int user_id FK
     }
 ```
 
@@ -453,12 +453,35 @@ git push -u origin book
 - 서버가 실행되지 않는 상태로는 commit 하지 않습니다.
 - push 전에 `git status`로 `db.sqlite3`, `__pycache__`, `venv`가 포함되지 않았는지 확인합니다.
 
-**commit 이미지**
-![commit1](images/commit1.png)
-![commit2](images/commit2.png)
-![commit3](images/commit3.png)
-![commit4](images/commit4.png)
---------------
+### 8-4. 문제 상황과 원인 분석
+
+**① `base.html` merge conflict**
+
+- **상황**: `book` → `master` MR에서 `templates/base.html`에 conflict가 발생했습니다.
+- **원인**: A와 B가 같은 파일의 **같은 줄(Navbar 링크)**을 각자 수정했습니다. A는 accounts 링크를 넣었고, B는 INDEX, CREATE, 로고 링크를 `books:index`, `books:create`로 바꿨습니다. Git은 두 변경 중 어느 것을 남길지 스스로 정할 수 없습니다.
+- **해결**: B가 conflict 부분을 직접 확인했습니다. 두 사람의 링크를 모두 남기도록 합친 뒤 commit 하고 merge 했습니다.
+- **배운 점**: 여러 사람이 고치는 공유 파일(`base.html`, `mypjt/urls.py`, `settings.py`)은 **한 사람이 담당**하거나, 수정 전에 서로 알리는 것이 좋습니다.
+
+**② 상대 코드가 없을 때 `NoReverseMatch` 에러**
+
+- **상황**: books만 있을 때 모든 페이지에서 `NoReverseMatch` 에러가 났습니다.
+- **원인**: `base.html`이 `accounts:login` 같은 URL name을 쓰는데, 그때는 `accounts/urls.py`가 비어 있었습니다.
+- **해결**: 로컬에서만 임시 accounts URL을 만들어 테스트했고, 그 파일은 commit 하지 않았습니다. A의 accounts가 merge된 뒤 정상 동작을 확인했습니다.
+- **배운 점**: URL name을 미리 합의해도, 실제 코드가 들어오는 **merge 순서**가 중요합니다.
+
+### 8-5. 원칙 점검 (프로젝트 종료 시)
+
+| 원칙 | 지켜졌는가 | 근거 / 반성 |
+| --- | --- | --- |
+| `master`에 직접 commit 하지 않기 | ⬜ 확인 필요 | 초기 프로젝트 뼈대 commit 확인 필요 |
+| 기능별 브랜치에서 작업 후 MR로 merge | ✅ | `book` → `master` MR로 merge |
+| merge 전 `master` 최신 내용 반영 | ⬜ 확인 필요 | `base.html` conflict는 MR 단계에서 발견됨 |
+| commit 메시지 `타입: 내용` 형식 | ⬜ 확인 필요 | GitLab commit 목록 기준으로 점검 |
+| 동작 확인 후 commit | ⬜ 확인 필요 | |
+| 불필요한 파일 제출하지 않기 | ✅ | `.gitignore` 적용 (`db.sqlite3`, `media/`, `__pycache__/`) |
+| 합의한 필드명 / URL name 지키기 | ✅ | 두 앱 코드가 수정 없이 연결됨 |
+
+---
 
 ## 9. 학습 내용
 
