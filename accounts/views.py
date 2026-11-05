@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods, require_POST, req
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count
+from django.db.models import Count, Q
 
 
 # Create your views here.
@@ -82,13 +82,24 @@ def follow(request, user_pk):
 def people(request):
     User = get_user_model()
     persons = User.objects.annotate(
-        follower_count=Count('followers')
+        follower_count=Count('followers', distinct=True)
     ).order_by('-follower_count', 'username')
 
     recommended = []
     if request.user.is_authenticated:
         persons = persons.exclude(pk=request.user.pk)
-        recommended = persons.exclude(pk__in=request.user.followings.all())[:5]
+        my_categories = request.user.preferred_categories.all()
+        recommended = (
+            persons.exclude(pk__in=request.user.followings.all())
+            .annotate(
+                common_count=Count(
+                    'preferred_categories',
+                    filter=Q(preferred_categories__in=my_categories),
+                    distinct=True,
+                )
+            )
+            .order_by('-common_count', '-follower_count', 'username')[:5]
+        )
 
     return render(request, 'accounts/people.html', {
         'persons': persons,
